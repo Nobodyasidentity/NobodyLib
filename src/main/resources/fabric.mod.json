@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "nobody-lib",
+	"version": "${version}",
+	"name": "NobodyLib",
+	"description": "A library for mods by Nobodyasidentity.",
+	"authors": [
+		"Nobodyasidentity"
+	],
+	"icon": "assets/nobody-lib/icon.png",
+	"entrypoints": {
+		"main": [
+			"io.github.nobodyasidentity.lib.NobodyLib"
+		]
+	},
+	"depends": {
+		"minecraft": "~26.1.2"
+	}
+}
