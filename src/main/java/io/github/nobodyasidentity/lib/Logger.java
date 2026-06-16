@@ -1,7 +1,5 @@
 package io.github.nobodyasidentity.lib;
-
 import org.slf4j.LoggerFactory;
-
 public class Logger{
     private final org.slf4j.Logger logger;
     private Logger(String modid){logger=LoggerFactory.getLogger(modid);}

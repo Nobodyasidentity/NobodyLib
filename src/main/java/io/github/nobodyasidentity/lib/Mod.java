@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.lib.core;
+package io.github.nobodyasidentity.lib;
 
 public final class Mod {
     private static String modid;

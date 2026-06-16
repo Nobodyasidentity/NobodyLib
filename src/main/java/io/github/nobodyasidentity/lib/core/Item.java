@@ -1,5 +1,6 @@
 package io.github.nobodyasidentity.lib.core;
 
+import io.github.nobodyasidentity.lib.Mod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
