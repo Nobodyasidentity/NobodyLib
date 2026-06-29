@@ -8,4 +8,6 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'nobody-lib'
+
+// Should match your modid
+rootProject.name = 'nobodylib'

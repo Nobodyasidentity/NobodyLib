@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.lib;
+package io.github.nobodyasidentity.nobodylib;
 import org.slf4j.LoggerFactory;
 public class Logger{
     private final org.slf4j.Logger logger;
