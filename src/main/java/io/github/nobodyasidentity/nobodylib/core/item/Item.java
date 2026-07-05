@@ -1,6 +1,8 @@
 package io.github.nobodyasidentity.nobodylib.core.item;
 
 import io.github.nobodyasidentity.nobodylib.NobodyLib;
+import io.github.nobodyasidentity.nobodylib.data.GenProvider;
+import io.github.nobodyasidentity.nobodylib.data.ItemModelGen;
 import io.github.nobodyasidentity.nobodylib.core.sound.Sound;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,6 +20,11 @@ public class Item extends net.minecraft.world.item.Item{
     
     public static Item create(String mod_id,String name){
         return create(mod_id,name,new net.minecraft.world.item.Item.Properties());
+    }
+    public static Item create(String mod_id,String name,GenProvider gen){
+        Item item=create(mod_id,name,new net.minecraft.world.item.Item.Properties());
+        ItemModelGen.flat(gen,mod_id,name);
+        return item;
     }
     public static Item create(String mod_id,String name,net.minecraft.world.item.Item.Properties properties){
         properties.setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));

@@ -9,6 +9,6 @@ public class NobodyLib implements ModInitializer{
 
 	@Override
 	public void onInitialize(){
-		LOGGER.info("Initializing "+NAME);
+		LOGGER.info("Initializing "+NAME+"...");
 	}
 }
