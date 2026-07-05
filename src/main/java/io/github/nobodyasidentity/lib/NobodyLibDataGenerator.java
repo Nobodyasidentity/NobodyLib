@@ -1,6 +1,6 @@
-package io.github.nobodyasidentity.nobodylib;
+package io.github.nobodyasidentity.lib;
 
-import io.github.nobodyasidentity.nobodylib.data.GenProvider;
+import io.github.nobodyasidentity.lib.data.GenProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 

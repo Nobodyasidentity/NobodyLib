@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "nobodylib",
 	"version": "${version}",
-	"name": "NobodyLib",
+	"name": "Nobody Lib",
 	"description": "A library for mods by Nobodyasidentity.",
 	"authors": [
 		"Nobodyasidentity"
@@ -15,10 +15,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"io.github.nobodyasidentity.nobodylib.NobodyLib"
+			"io.github.nobodyasidentity.lib.NobodyLib"
 		],
 		"fabric-datagen": [
-			"io.github.nobodyasidentity.nobodylib.NobodyLibDataGenerator"
+			"io.github.nobodyasidentity.lib.NobodyLibDataGenerator"
 		]
 	},
 	"depends": {

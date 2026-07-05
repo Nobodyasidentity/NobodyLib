@@ -1,9 +1,9 @@
-package io.github.nobodyasidentity.nobodylib.core.item;
+package io.github.nobodyasidentity.lib.core.item;
 
-import io.github.nobodyasidentity.nobodylib.NobodyLib;
-import io.github.nobodyasidentity.nobodylib.data.GenProvider;
-import io.github.nobodyasidentity.nobodylib.data.ItemModelGen;
-import io.github.nobodyasidentity.nobodylib.core.sound.Sound;
+import io.github.nobodyasidentity.lib.NobodyLib;
+import io.github.nobodyasidentity.lib.core.sound.Sound;
+import io.github.nobodyasidentity.lib.data.GenProvider;
+import io.github.nobodyasidentity.lib.data.ItemModelGen;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

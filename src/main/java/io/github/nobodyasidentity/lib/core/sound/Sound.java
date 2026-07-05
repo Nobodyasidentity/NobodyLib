@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.nobodylib.core.sound;
+package io.github.nobodyasidentity.lib.core.sound;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

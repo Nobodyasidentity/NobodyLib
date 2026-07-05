@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.nobodylib.data;
+package io.github.nobodyasidentity.lib.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;

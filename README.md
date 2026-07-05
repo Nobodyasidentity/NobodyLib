@@ -1,6 +1,6 @@
 ## Item
 ```java
-import io.github.nobodyasidentity.nobodylib.core.item.Item;
+import io.github.nobodyasidentity.lib.core.item.Item;
 
 public class item_example {
     public static final String MOD_ID = "example_mod";
@@ -11,7 +11,7 @@ public class item_example {
 ## Block
 ```java
 import net.minecraft.world.item.BlockItem;
-import io.github.nobodyasidentity.nobodylib.core.item.Block;
+import io.github.nobodyasidentity.lib.core.item.Block;
 
 public class block_example {
     public static final String MOD_ID = "example_mod";
@@ -22,7 +22,7 @@ public class block_example {
 ```
 ## Logger
 ```java
-import io.github.nobodyasidentity.nobodylib.Logger;
+import io.github.nobodyasidentity.lib.Logger;
 
 public class logger_example {
     public static final String MOD_ID = "example_mod";

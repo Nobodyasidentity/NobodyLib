@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.nobodylib.core.item;
+package io.github.nobodyasidentity.lib.core.item;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

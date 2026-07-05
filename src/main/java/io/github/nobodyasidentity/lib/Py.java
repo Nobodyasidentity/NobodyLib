@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.nobodylib;
+package io.github.nobodyasidentity.lib;
 
 import java.util.*;
 import java.util.stream.*;
