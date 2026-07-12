@@ -11,6 +11,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 
+import net.minecraft.world.item.SpawnEggItem;
+
 public class Item extends net.minecraft.world.item.Item{
     public static void init(){
         NobodyLib.LOGGER.info("Initializing items...");
@@ -41,12 +43,12 @@ public class Item extends net.minecraft.world.item.Item{
         if(createSoundEvent){Sound.create(mod_id,name);}
         return register(mod_id,name,new Item(properties));
     }
-    // Not tested. Use at own risk.
-    public static Item createSpawnEgg(String mod_id,String name,EntityType<?>entity_type,net.minecraft.world.item.Item.Properties properties){
+    public static SpawnEggItem createSpawnEgg(String mod_id,String name,EntityType<?>entity_type,net.minecraft.world.item.Item.Properties properties){
+        properties.setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));
         properties.spawnEgg(entity_type);
-        return create(mod_id,name,properties);
+        return register(mod_id,name,new SpawnEggItem(properties));
     }
-    public static Item createSpawnEgg(String mod_id,String name,EntityType<?>entity_type){
+    public static SpawnEggItem createSpawnEgg(String mod_id,String name,EntityType<?>entity_type){
         return createSpawnEgg(mod_id,name,entity_type,new net.minecraft.world.item.Item.Properties());
     }
 }
