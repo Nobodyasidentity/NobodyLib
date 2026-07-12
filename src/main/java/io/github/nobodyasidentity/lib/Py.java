@@ -15,6 +15,9 @@ public final class Py{
             Arrays.stream(args).map(Py::str).collect(Collectors.joining(sep))+end
         );
     }
+    public static String str(Object...o){
+        return Arrays.stream(o).map(Py::str).collect(Collectors.joining(" "));
+    }
     public static String str(Object o){
         if(o==null)return"null";
         if(o instanceof Boolean b)return b?"true":"false";
@@ -41,7 +44,7 @@ public final class Py{
         return true;
     }
 
-    public static boolean isinstance(Object o,Class<?>... classes) {
+    public static boolean isinstance(Object o,Class<?>... classes){
         for (Class<?>c:classes)if(c.isInstance(o))return true;
         return false;
     }

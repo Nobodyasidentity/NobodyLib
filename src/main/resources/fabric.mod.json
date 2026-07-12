@@ -8,7 +8,6 @@
 		"Nobodyasidentity"
 	],
 	"contact": {
-		"homepage": "https://nobodyasidentity.github.io",
 		"sources": "https://github.com/Nobodyasidentity/NobodyLib"
 	},
 	"icon": "assets/nobodylib/icon.png",
@@ -19,10 +18,21 @@
 		],
 		"fabric-datagen": [
 			"io.github.nobodyasidentity.lib.NobodyLibDataGenerator"
+		],
+		"client": [
+			"io.github.nobodyasidentity.lib.NobodyLibClient"
 		]
 	},
 	"depends": {
 		"minecraft": "~26.2",
 		"fabric-api": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.modrinth": "https://modrinth.com/mod/nobodylib"
+			},
+			"badges": ["library"]
+		}
 	}
 }

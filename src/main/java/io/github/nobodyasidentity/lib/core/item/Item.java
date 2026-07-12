@@ -2,13 +2,14 @@ package io.github.nobodyasidentity.lib.core.item;
 
 import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.core.sound.Sound;
-import io.github.nobodyasidentity.lib.data.GenProvider;
-import io.github.nobodyasidentity.lib.data.ItemModelGen;
+import io.github.nobodyasidentity.lib.datagen.GenProvider;
+import io.github.nobodyasidentity.lib.datagen.ItemModelGen;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
 
 public class Item extends net.minecraft.world.item.Item{
     public static void init(){
@@ -34,10 +35,18 @@ public class Item extends net.minecraft.world.item.Item{
     public static Item createMusicDisc(String mod_id,String name){
         return createMusicDisc(mod_id,name,new Item.Properties().stacksTo(1),true);
     }
-    public static Item createMusicDisc(String mod_id,String name,Item.Properties properties,Boolean createSoundEvent){
+    public static Item createMusicDisc(String mod_id,String name,net.minecraft.world.item.Item.Properties properties,Boolean createSoundEvent){
         properties.setId(ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));
         properties.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG,Identifier.fromNamespaceAndPath(mod_id,name)));
         if(createSoundEvent){Sound.create(mod_id,name);}
         return register(mod_id,name,new Item(properties));
+    }
+    // Not tested. Use at own risk.
+    public static Item createSpawnEgg(String mod_id,String name,EntityType<?>entity_type,net.minecraft.world.item.Item.Properties properties){
+        properties.spawnEgg(entity_type);
+        return create(mod_id,name,properties);
+    }
+    public static Item createSpawnEgg(String mod_id,String name,EntityType<?>entity_type){
+        return createSpawnEgg(mod_id,name,entity_type,new net.minecraft.world.item.Item.Properties());
     }
 }

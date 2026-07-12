@@ -1,4 +1,4 @@
-package io.github.nobodyasidentity.lib.data;
+package io.github.nobodyasidentity.lib.datagen;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
