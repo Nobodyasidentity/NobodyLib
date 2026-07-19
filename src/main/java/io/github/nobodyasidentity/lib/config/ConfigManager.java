@@ -26,8 +26,8 @@ public final class ConfigManager{
 
     public static void load(){
         NobodyLibConfig loaded=null;
-        if (Files.exists(PATH)){
-            try (Reader reader=Files.newBufferedReader(PATH)){
+        if(Files.exists(PATH)){
+            try(Reader reader=Files.newBufferedReader(PATH)){
                 loaded=GSON.fromJson(reader,NobodyLibConfig.class);
             }catch(IOException e){
                 e.printStackTrace();

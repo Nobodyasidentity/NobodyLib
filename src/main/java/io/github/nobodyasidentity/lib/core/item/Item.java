@@ -1,5 +1,6 @@
 package io.github.nobodyasidentity.lib.core.item;
 
+import java.util.function.Function;
 import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.core.sound.Sound;
 import io.github.nobodyasidentity.lib.datagen.GenProvider;
@@ -19,7 +20,7 @@ public class Item extends net.minecraft.world.item.Item{
         NobodyLib.LOGGER.info("Initialized items!");
     }
     public Item(net.minecraft.world.item.Item.Properties properties){super(properties);}
-    private static <T extends net.minecraft.world.item.Item> T register(String mod_id,String name,T item){return Registry.register(BuiltInRegistries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name),item);}
+    private static<T extends net.minecraft.world.item.Item>T register(String mod_id,String name,T item){return Registry.register(BuiltInRegistries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name),item);}
     
     public static Item create(String mod_id,String name){
         return create(mod_id,name,new net.minecraft.world.item.Item.Properties());
@@ -50,5 +51,18 @@ public class Item extends net.minecraft.world.item.Item{
     }
     public static SpawnEggItem createSpawnEgg(String mod_id,String name,EntityType<?>entity_type){
         return createSpawnEgg(mod_id,name,entity_type,new net.minecraft.world.item.Item.Properties());
+    }
+    public static<T extends net.minecraft.world.item.Item>T create(String mod_id,String name,java.util.function.Function<net.minecraft.world.item.Item.Properties,T>factory){
+        return create(mod_id,name,new net.minecraft.world.item.Item.Properties(),factory);
+    }
+    public static<T extends net.minecraft.world.item.Item>T create(String mod_id,String name,GenProvider gen,java.util.function.Function<net.minecraft.world.item.Item.Properties,T>factory){
+        T item=create(mod_id,name,new net.minecraft.world.item.Item.Properties(),factory);
+        ItemModelGen.flat(gen,mod_id,name);
+        return item;
+    }
+    public static<T extends net.minecraft.world.item.Item>T create(String mod_id,String name,net.minecraft.world.item.Item.Properties properties,java.util.function.Function<net.minecraft.world.item.Item.Properties,T>factory){
+        properties.setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));
+        T item=factory.apply(properties);
+        return register(mod_id,name,item);
     }
 }
