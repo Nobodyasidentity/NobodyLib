@@ -1,6 +1,5 @@
 package io.github.nobodyasidentity.lib.core.item;
 
-import java.util.function.Function;
 import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.core.sound.Sound;
 import io.github.nobodyasidentity.lib.datagen.GenProvider;
