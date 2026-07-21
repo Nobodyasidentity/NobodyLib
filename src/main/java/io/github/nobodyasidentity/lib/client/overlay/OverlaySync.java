@@ -1,5 +1,7 @@
 package io.github.nobodyasidentity.lib.client.overlay;
 
+import io.github.nobodyasidentity.lib.NobodyLib;
+import io.github.nobodyasidentity.lib.client.overlay.platform.RawOverlayWindow;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.lwjgl.system.MemoryStack;
 
@@ -13,8 +15,6 @@ public final class OverlaySync{
         ClientTickEvents.END_CLIENT_TICK.register(client->sync(mcWindowHandle));
     }
     public static void sync(long mcWindowHandle){
-        long overlay=OverlayWindow.getHandle();
-        if(overlay==-1L)return;
         try(MemoryStack stack=MemoryStack.stackPush()){
             IntBuffer x=stack.mallocInt(1);
             IntBuffer y=stack.mallocInt(1);
@@ -24,8 +24,14 @@ public final class OverlaySync{
             glfwGetWindowPos(mcWindowHandle,x,y);
             glfwGetWindowSize(mcWindowHandle,w,h);
 
-            glfwSetWindowPos(overlay,x.get(0),y.get(0));
-            glfwSetWindowSize(overlay,w.get(0),h.get(0));
+            if(NobodyLib.OS.contains("win")){
+                RawOverlayWindow.setBounds(x.get(0),y.get(0),w.get(0),h.get(0));
+            }else{
+                long overlay=OverlayWindow.getHandle();
+                if(overlay==-1L)return;
+                glfwSetWindowPos(overlay,x.get(0),y.get(0));
+                glfwSetWindowSize(overlay,w.get(0),h.get(0));
+            }
         }
     }
 }

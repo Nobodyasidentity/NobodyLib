@@ -25,14 +25,14 @@ public final class NobodyLibConfigScreen{
         ConfigCategory client=builder.getOrCreateCategory(Component.literal("Client"));
         SubCategoryBuilder overlay=entryBuilder.startSubCategory(Component.literal("Overlay"));
         SubCategoryBuilder debug=entryBuilder.startSubCategory(Component.literal("Debug"));
-        BooleanListEntry overlayToggle=entryBuilder.startBooleanToggle(Component.literal("§cEnable Overlay (Currently does not work)"),config.overlay.enabled)
+        BooleanListEntry overlayToggle=entryBuilder.startBooleanToggle(Component.literal("Enable Overlay"),config.overlay.enabled)
                 .setDefaultValue(false)
                 .setTooltip(Component.literal("Enables the experimental click-through overlay window - requires restart."))
                 .setSaveConsumer(value->config.overlay.enabled=value)
                 .build();
         overlay.setExpanded(true).add(overlayToggle);
         debug.setExpanded(false).add(
-            entryBuilder.startBooleanToggle(Component.literal("Enable Overlay Outline (does nothing for now)"),config.overlay.outline_enabled)
+            entryBuilder.startBooleanToggle(Component.literal("Enable Overlay Outline"),config.overlay.outline_enabled)
                 .setDefaultValue(false)
                 .setTooltip(Component.literal("Adds an outline to the overlay window"))
                 .setSaveConsumer(value->config.overlay.outline_enabled=value)

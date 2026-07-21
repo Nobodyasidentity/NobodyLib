@@ -1,7 +1,7 @@
 package io.github.nobodyasidentity.lib.client.overlay.platform;
 
-import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.GDI32;
+import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HBITMAP;
 import com.sun.jna.platform.win32.WinDef.HDC;
@@ -14,7 +14,7 @@ import com.sun.jna.platform.win32.WinUser.BLENDFUNCTION;
 import com.sun.jna.platform.win32.WinDef.POINT;
 import com.sun.jna.platform.win32.WinUser.SIZE;
 import com.sun.jna.ptr.PointerByReference;
-import org.lwjgl.glfw.GLFWNativeWin32;
+import com.sun.jna.Pointer;
 
 import java.nio.ByteBuffer;
 
@@ -28,10 +28,9 @@ public final class Win32LayeredWindow{
     private static int bitmapHeight=-1;
 
     private Win32LayeredWindow(){}
-    public static void init(long glfwHandle){
-        long hwndPtr=GLFWNativeWin32.glfwGetWin32Window(glfwHandle);
-        hwnd=new HWND(Pointer.createConstant(hwndPtr));
 
+    public static void init(HWND rawHwnd){
+        hwnd=rawHwnd;
         screenDC=User32.INSTANCE.GetDC(null);
         memDC=GDI32.INSTANCE.CreateCompatibleDC(screenDC);
     }
@@ -58,7 +57,10 @@ public final class Win32LayeredWindow{
         blend.SourceConstantAlpha=(byte)255;
         blend.AlphaFormat=WinUser.AC_SRC_ALPHA;
 
-        User32.INSTANCE.UpdateLayeredWindow(hwnd,screenDC,pos,size,memDC,srcPos,0,blend,WinUser.ULW_ALPHA);
+        boolean ok=User32.INSTANCE.UpdateLayeredWindow(hwnd,screenDC,pos,size,memDC,srcPos,0,blend,WinUser.ULW_ALPHA);
+        if(!ok){
+            System.err.println("[NobodyLib] UpdateLayeredWindow failed, error="+Kernel32.INSTANCE.GetLastError());
+        }
         GDI32.INSTANCE.SelectObject(memDC,oldBitmap);
     }
 
@@ -90,6 +92,9 @@ public final class Win32LayeredWindow{
 
         PointerByReference ppBits=new PointerByReference();
         bitmap=GDI32.INSTANCE.CreateDIBSection(memDC,bmi,WinGDI.DIB_RGB_COLORS,ppBits,null,0);
+        if(bitmap==null){
+            System.err.println("[NobodyLib] CreateDIBSection returned null, error="+Kernel32.INSTANCE.GetLastError());
+        }
         bits=ppBits.getValue();
         bitmapWidth=width;
         bitmapHeight=height;
