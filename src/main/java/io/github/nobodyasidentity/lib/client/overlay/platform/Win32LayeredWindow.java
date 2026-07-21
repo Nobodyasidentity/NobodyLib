@@ -15,7 +15,6 @@ import com.sun.jna.platform.win32.WinDef.POINT;
 import com.sun.jna.platform.win32.WinUser.SIZE;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.Pointer;
-
 import java.nio.ByteBuffer;
 
 public final class Win32LayeredWindow{

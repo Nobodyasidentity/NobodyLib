@@ -1,0 +1,15 @@
+{
+    "config.nobodylib.client": "Client",
+    "config.nobodylib.client.overlay": "Overlay",
+    "config.nobodylib.client.option.overlay": "Enable Overlay",
+    "config.nobodylib.client.option.overlay.desc": "Enables the experimental click-through overlay window - requires restart.",
+    "config.nobodylib.client.debug": "Debug",
+    "config.nobodylib.client.option.debug.overlay_outline": "Enable Overlay Outline",
+    "config.nobodylib.client.option.debug.overlay_outline.desc": "Adds an outline to the overlay window",
+
+    "config.nobodylib.server": "Server",
+    "config.nobodylib.server.debug": "Debug",
+
+    "config.nobodylib.core": "Core",
+    "config.nobodylib.core.debug": "Debug"
+}

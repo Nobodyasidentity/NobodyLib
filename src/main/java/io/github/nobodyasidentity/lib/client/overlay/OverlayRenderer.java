@@ -3,9 +3,8 @@ package io.github.nobodyasidentity.lib.client.overlay;
 import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.client.overlay.platform.RawOverlayWindow;
 import io.github.nobodyasidentity.lib.client.overlay.platform.Win32LayeredWindow;
-import io.github.nobodyasidentity.lib.config.ConfigManager;
+import io.github.nobodyasidentity.lib.config.NobodyLibConfigs;
 import org.lwjgl.opengl.GL;
-
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -49,7 +48,7 @@ public final class OverlayRenderer{
             glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
             setupPixelProjection(w[0],h[0]);
             content.render(w[0],h[0]);
-            if(ConfigManager.get().overlay.outline_enabled){
+            if(NobodyLibConfigs.CLIENT.get().overlay.outline_enabled){
                 drawDebugOutline(w[0],h[0]);
             }
             glfwSwapBuffers(overlay);
@@ -72,7 +71,7 @@ public final class OverlayRenderer{
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         setupPixelProjection(width,height);
         content.render(width,height);
-        if(ConfigManager.get().overlay.outline_enabled){
+        if(NobodyLibConfigs.CLIENT.get().overlay.outline_enabled){
             drawDebugOutline(width,height);
         }
 
@@ -109,7 +108,7 @@ public final class OverlayRenderer{
     }
 
     private static void ensureFbo(int width,int height){
-        if(fbo!=0 && width==fboWidth && height==fboHeight) return;
+        if(fbo!=0&&width==fboWidth&&height==fboHeight)return;
 
         if(fbo!=0){
             glDeleteFramebuffers(fbo);

@@ -5,12 +5,12 @@ import java.util.stream.*;
 
 public final class Py{
     private Py(){}
-    public static void print(Object... args){
+    public static void print(Object...args){
         System.out.println(
             Arrays.stream(args).map(Py::str).collect(Collectors.joining(" "))
         );
     }
-    public static void printWith(String sep,String end,Object... args){
+    public static void printWith(String sep,String end,Object...args){
         System.out.print(
             Arrays.stream(args).map(Py::str).collect(Collectors.joining(sep))+end
         );
@@ -44,7 +44,7 @@ public final class Py{
         return true;
     }
 
-    public static boolean isinstance(Object o,Class<?>... classes){
+    public static boolean isinstance(Object o,Class<?>...classes){
         for (Class<?>c:classes)if(c.isInstance(o))return true;
         return false;
     }
@@ -69,22 +69,22 @@ public final class Py{
     }
 
     @SafeVarargs
-    public static <T> List<T> list(T... items){
+    public static <T> List<T> list(T...items){
         return new ArrayList<>(Arrays.asList(items));
     }
-    public static <T> List<T> list(Iterable<T> it){
+    public static <T> List<T> list(Iterable<T>it){
         List<T> r=new ArrayList<>(); it.forEach(r::add);return r;
     }
     @SafeVarargs
-    public static <T> Set<T> set(T... items){
+    public static <T> Set<T> set(T...items){
         return new LinkedHashSet<>(Arrays.asList(items));
     }
-    public static <T> Set<T> set(Iterable<T> it){
+    public static <T> Set<T> set(Iterable<T>it){
         Set<T> r=new LinkedHashSet<>(); it.forEach(r::add);return r;
     }
     public static <K,V> Map<K,V> dict(){return new LinkedHashMap<>();}
     @SafeVarargs
-    public static <K,V> Map<K,V> dict(Map.Entry<K,V>... entries){
+    public static <K,V> Map<K,V> dict(Map.Entry<K,V>...entries){
         Map<K,V> m=new LinkedHashMap<>();
         for(var e:entries)m.put(e.getKey(),e.getValue());
         return m;

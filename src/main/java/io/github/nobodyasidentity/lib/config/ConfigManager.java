@@ -1,48 +1,20 @@
 package io.github.nobodyasidentity.lib.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import io.github.nobodyasidentity.lib.NobodyLib;
-import net.fabricmc.loader.api.FabricLoader;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class ConfigManager{
-    private static final Gson GSON=new GsonBuilder().setPrettyPrinting().create();
-    private static final Path PATH=FabricLoader.getInstance().getConfigDir().resolve(NobodyLib.MOD_ID+"/config.json");
-
-    private static NobodyLibConfig instance;
+    private static final Map<String,ConfigFile<?>>files=new LinkedHashMap<>();
     private ConfigManager(){}
-
-    public static NobodyLibConfig get(){
-        if(instance==null)load();
-        return instance;
-    }
-
-    public static void load(){
-        NobodyLibConfig loaded=null;
-        if(Files.exists(PATH)){
-            try(Reader reader=Files.newBufferedReader(PATH)){
-                loaded=GSON.fromJson(reader,NobodyLibConfig.class);
-            }catch(IOException e){
-                e.printStackTrace();
-            }
+    public static <T>ConfigFile<T>register(String id,Class<T>type){
+        if(files.containsKey(id)){
+            throw new IllegalStateException("Config category '"+id+"' is already registered");
         }
-        instance=loaded!=null?loaded:new NobodyLibConfig();
+        ConfigFile<T> file=new ConfigFile<>(id,type);
+        files.put(id,file);
+        return file;
     }
-    public static void save(){
-        try{
-            Files.createDirectories(PATH.getParent());
-            try(Writer writer=Files.newBufferedWriter(PATH)){
-                GSON.toJson(get(), writer);
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+    public static void saveAll(){
+        for(ConfigFile<?>file:files.values())file.save();
     }
 }

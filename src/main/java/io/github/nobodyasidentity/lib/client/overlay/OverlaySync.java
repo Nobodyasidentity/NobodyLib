@@ -4,7 +4,6 @@ import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.client.overlay.platform.RawOverlayWindow;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.lwjgl.system.MemoryStack;
-
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;

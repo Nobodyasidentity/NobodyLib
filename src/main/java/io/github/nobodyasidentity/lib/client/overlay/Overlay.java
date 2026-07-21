@@ -3,7 +3,7 @@ package io.github.nobodyasidentity.lib.client.overlay;
 import io.github.nobodyasidentity.lib.NobodyLib;
 import io.github.nobodyasidentity.lib.client.overlay.platform.RawOverlayWindow;
 import io.github.nobodyasidentity.lib.client.overlay.platform.Win32LayeredWindow;
-import io.github.nobodyasidentity.lib.config.ConfigManager;
+import io.github.nobodyasidentity.lib.config.NobodyLibConfigs;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 
@@ -16,7 +16,7 @@ public final class Overlay{
         if(initialized)return;
         initialized=true;
 
-        if(!ConfigManager.get().overlay.enabled){return;}
+        if(!NobodyLibConfigs.CLIENT.get().overlay.enabled){return;}
 
         long mcHandle=Minecraft.getInstance().getWindow().handle();
 

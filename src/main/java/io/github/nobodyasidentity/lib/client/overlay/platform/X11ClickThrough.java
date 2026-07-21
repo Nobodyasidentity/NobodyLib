@@ -13,7 +13,6 @@ public final class X11ClickThrough{
 
     private interface XExt extends Library{
         XExt INSTANCE=Native.load("Xext",XExt.class);
-
         void XShapeCombineRectangles(Pointer display,long window,int destKind,int xOff,int yOff,Pointer rects,int nRects,int op,int ordering);
     }
     public static void apply(long glfwHandle){

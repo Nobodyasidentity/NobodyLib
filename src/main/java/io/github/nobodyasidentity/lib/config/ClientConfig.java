@@ -1,5 +1,7 @@
 package io.github.nobodyasidentity.lib.config;
 
-public class NobodyLibConfig{
+import io.github.nobodyasidentity.lib.config.client.OverlayConfig;
+
+public class ClientConfig{
     public OverlayConfig overlay=new OverlayConfig();
 }
