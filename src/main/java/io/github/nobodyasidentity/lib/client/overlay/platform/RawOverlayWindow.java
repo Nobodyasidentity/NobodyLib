@@ -1,6 +1,5 @@
 package io.github.nobodyasidentity.lib.client.overlay.platform;
 
-import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HINSTANCE;
@@ -19,14 +18,10 @@ public final class RawOverlayWindow{
     private static final int WS_EX_NOACTIVATE=0x08000000;
     private static final int WS_EX_TOPMOST=0x00000008;
     private static final int SW_SHOWNOACTIVATE=4;
-    private static final int SWP_NOACTIVATE=0x0010;
-
-    private static final HWND HWND_TOPMOST=new HWND(Pointer.createConstant(-1));
     private static final WindowProc WND_PROC=(hwnd,uMsg,wParam,lParam)->User32.INSTANCE.DefWindowProc(hwnd,uMsg,wParam,lParam);
 
     private static HWND hwnd;
     private static int lastX,lastY;
-    private static int frameCounter=0;
 
     private RawOverlayWindow(){}
 
@@ -58,7 +53,6 @@ public final class RawOverlayWindow{
         if(hwnd==null)return;
         lastX=x;
         lastY=y;
-        boolean ok=User32.INSTANCE.SetWindowPos(hwnd,HWND_TOPMOST,x,y,Math.max(width,1),Math.max(height,1),SWP_NOACTIVATE);
     }
     public static HWND getHwnd(){return hwnd;}
     public static int getX(){return lastX;}

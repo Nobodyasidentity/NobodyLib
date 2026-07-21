@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL30.*;
 
 public final class OverlayRenderer{
     private static ByteBuffer pixelBuffer;
-    private static int frameCounter=0;
 
     private static int fbo=0;
     private static int fboTexture=0;
@@ -98,7 +97,7 @@ public final class OverlayRenderer{
     private static void drawDebugOutline(int width,int height){
         glDisable(GL_BLEND);
         glLineWidth(2f);
-        glColor4f(1f,0f,1f,1f);
+        glColor4f(1f,0f,0f,1f);
         glBegin(GL_LINE_LOOP);
         glVertex2f(1,1);
         glVertex2f(width-1,1);
