@@ -7,17 +7,26 @@ import io.github.nobodyasidentity.lib.config.NobodyLibConfigs;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public final class Overlay{
-    private static OverlayRenderer.Content content=(w,h)->{};
+    private static final Map<String,Content> layers=new LinkedHashMap<>();
     private static boolean initialized=false;
+
     private Overlay(){}
+
+    @FunctionalInterface
+    public interface Content{
+        void render(int width,int height);
+    }
+
     public static boolean isInitialized(){return initialized;}
+
     public static void init(){
         if(initialized)return;
         initialized=true;
-
         if(!NobodyLibConfigs.CLIENT.get().overlay.enabled){return;}
-
         long mcHandle=Minecraft.getInstance().getWindow().handle();
 
         OverlayWindow.create(mcHandle,1,1);
@@ -29,11 +38,21 @@ public final class Overlay{
             ClickThrough.apply(OverlayWindow.getHandle());
             OverlayWindow.show();
         }
-
         OverlaySync.register(mcHandle);
-        ClientTickEvents.END_CLIENT_TICK.register(client->OverlayRenderer.renderFrame(mcHandle,content));
+        ClientTickEvents.END_CLIENT_TICK.register(client->OverlayRenderer.renderFrame(mcHandle));
     }
-    public static void setContent(OverlayRenderer.Content newContent){
-        content=newContent;
+    public static void register(String id,Content content){
+        layers.put(id,content);
+    }
+    public static void unregister(String id){
+        layers.remove(id);
+    }
+    public static boolean isRegistered(String id){
+        return layers.containsKey(id);
+    }
+    static void renderLayers(int width,int height){
+        for(Content content:layers.values()){
+            content.render(width,height);
+        }
     }
 }

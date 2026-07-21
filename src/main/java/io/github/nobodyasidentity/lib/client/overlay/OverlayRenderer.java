@@ -22,12 +22,7 @@ public final class OverlayRenderer{
 
     private OverlayRenderer(){}
 
-    @FunctionalInterface
-    public interface Content{
-        void render(int width,int height);
-    }
-
-    public static void renderFrame(long mcWindowHandle,Content content){
+    public static void renderFrame(long mcWindowHandle){
         long overlay=OverlayWindow.getHandle();
         if(overlay==-1L)return;
 
@@ -39,7 +34,7 @@ public final class OverlayRenderer{
 
         if(NobodyLib.OS.contains("win")){
             glfwGetFramebufferSize(mcWindowHandle,w,h);
-            renderAndPresentWindows(w[0],h[0],content);
+            renderAndPresentWindows(w[0],h[0]);
         }else{
             glfwGetFramebufferSize(overlay,w,h);
             glClearColor(0f,0f,0f,0f);
@@ -47,18 +42,17 @@ public final class OverlayRenderer{
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
             setupPixelProjection(w[0],h[0]);
-            content.render(w[0],h[0]);
+            Overlay.renderLayers(w[0],h[0]);
             if(NobodyLibConfigs.CLIENT.get().overlay.outline_enabled){
                 drawDebugOutline(w[0],h[0]);
             }
             glfwSwapBuffers(overlay);
         }
-
         glfwMakeContextCurrent(mcWindowHandle);
         GL.setCapabilities(OverlayWindow.getMcCapabilities());
     }
 
-    private static void renderAndPresentWindows(int width,int height,Content content){
+    private static void renderAndPresentWindows(int width,int height){
         if(width<=0||height<=0)return;
 
         ensureFbo(width,height);
@@ -70,7 +64,7 @@ public final class OverlayRenderer{
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         setupPixelProjection(width,height);
-        content.render(width,height);
+        Overlay.renderLayers(width,height);
         if(NobodyLibConfigs.CLIENT.get().overlay.outline_enabled){
             drawDebugOutline(width,height);
         }
@@ -133,4 +127,5 @@ public final class OverlayRenderer{
         fboWidth=width;
         fboHeight=height;
     }
+
 }
