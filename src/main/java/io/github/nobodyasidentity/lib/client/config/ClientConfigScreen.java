@@ -1,5 +1,6 @@
 package io.github.nobodyasidentity.lib.client.config;
 
+import io.github.nobodyasidentity.lib.client.overlay.OverlayDisplay;
 import io.github.nobodyasidentity.lib.config.ClientConfig;
 import me.shedaniel.clothconfig2.api.Requirement;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -23,6 +24,21 @@ public class ClientConfigScreen{
                 .setSaveConsumer(value->config.overlay.enabled=value)
                 .build();
         overlay.setExpanded(true).add(overlayToggle);
+        overlay.add(
+            entryBuilder.startBooleanToggle(translateable("option.overlay.display"),config.overlay.display_enabled)
+                .setDefaultValue(false)
+                .setTooltip(translateable("option.overlay.display.desc"))
+                .setSaveConsumer(value->{
+                    config.overlay.display_enabled=value;
+                    if(value){
+                        OverlayDisplay.register();
+                    }else{
+                        OverlayDisplay.unregister();
+                    }
+                })
+                .setDisplayRequirement(Requirement.isTrue(overlayToggle::getValue))
+                .build()
+        );
         debug.setExpanded(false).add(
             entryBuilder.startBooleanToggle(translateable("option.debug.overlay_outline"),config.overlay.outline_enabled)
                 .setDefaultValue(false)

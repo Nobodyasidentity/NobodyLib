@@ -2,6 +2,7 @@ package io.github.nobodyasidentity.lib.client.keybind;
 
 import java.util.function.Function;
 
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.nobodyasidentity.lib.NobodyLib;
@@ -21,10 +22,10 @@ public class KeyBindCreator{
     public static final KeyMapping create(String mod_id,String name,int key,KeyMapping.Category category){
         return create(mod_id,name,InputConstants.Type.KEYSYM,key,category);
     }
-    public static final KeyMapping create(String mod_id,String name,InputConstants.Type type,String key,KeyMapping.Category category){
+    public static final KeyMapping create(String mod_id,String name,InputConstants.Type type,@Nullable String key,KeyMapping.Category category){
         return create(mod_id,name,type,getKeyInt(key),category);
     }
-    public static final KeyMapping create(String mod_id,String name,String key,KeyMapping.Category category){
+    public static final KeyMapping create(String mod_id,String name,@Nullable String key,KeyMapping.Category category){
         return create(mod_id,name,getKeyInt(key),category);
     }
     public static final KeyMapping create(String mod_id,String name,int key){
@@ -53,7 +54,11 @@ public class KeyBindCreator{
     public static final void registerEvent(KeyMapping keybind,Function<Minecraft,?>fn){
         registerEvent(keybind,(ClientTickEvents.EndTick)fn,true);
     }
-    public static int getKeyInt(String key){
+    public static int getKeyInt(char key){
+        return getKeyInt(Character.toString(key));
+    }
+    public static int getKeyInt(@Nullable String key){
+        if(key==null)key="";
         key=key.toLowerCase();
         int keysum=-2;
         switch(key){

@@ -1,8 +1,13 @@
 {
+    "info.nobodylib.no_config": "Please install %s to see config.",
+    "info.nobodylib.no_config.name": "Cloth Config API",
+
     "config.nobodylib.client": "Client",
     "config.nobodylib.client.overlay": "Overlay",
     "config.nobodylib.client.option.overlay": "Enable Overlay",
     "config.nobodylib.client.option.overlay.desc": "Enables the experimental click-through overlay window - requires restart.",
+    "config.nobodylib.client.option.overlay.display": "Enable Overlay Display",
+    "config.nobodylib.client.option.overlay.display.desc": "Enables a simple F3-like debug screen with some info (currently just the FPS)",
     "config.nobodylib.client.debug": "Debug",
     "config.nobodylib.client.option.debug.overlay_outline": "Enable Overlay Outline",
     "config.nobodylib.client.option.debug.overlay_outline.desc": "Adds an outline to the overlay window",
