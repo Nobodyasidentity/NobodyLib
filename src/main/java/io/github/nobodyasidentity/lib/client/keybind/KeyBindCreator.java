@@ -1,13 +1,15 @@
 package io.github.nobodyasidentity.lib.client.keybind;
 
 import java.util.function.Function;
-
 import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.nobodyasidentity.lib.NobodyLib;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
@@ -54,421 +56,171 @@ public class KeyBindCreator{
     public static final void registerEvent(KeyMapping keybind,Function<Minecraft,?>fn){
         registerEvent(keybind,(ClientTickEvents.EndTick)fn,true);
     }
+    public static final void registerGlobalEvent(KeyMapping keybind,ClientTickEvents.EndTick fn){
+        ClientTickEvents.END_CLIENT_TICK.register(client->{
+            while(keybind.consumeClick()){
+                fn.onEndTick(client);
+            }
+        });
+        ScreenEvents.BEFORE_INIT.register((client,screen,scaledWidth,scaledHeight)->{
+            ScreenKeyboardEvents.allowKeyPress(screen).register((activeScreen,keyEvent)->{
+                InputConstants.Key boundKey=KeyMappingHelper.getBoundKeyOf(keybind);
+                int targetKey=boundKey.getValue();
+                int processedKey=keyEvent.input();
+                if (processedKey==targetKey&&targetKey!=GLFW.GLFW_KEY_UNKNOWN){
+                    fn.onEndTick(client);
+                    return false;
+                }
+                return true;
+            });
+        });
+    }
+    public static final void registerGlobalEvent(KeyMapping keybind,Function<Minecraft,?>fn){
+        registerGlobalEvent(keybind,(ClientTickEvents.EndTick)fn);
+    }
     public static int getKeyInt(char key){
         return getKeyInt(Character.toString(key));
     }
     public static int getKeyInt(@Nullable String key){
         if(key==null)key="";
         key=key.toLowerCase();
-        int keysum=-2;
         switch(key){
-            case"":
-                keysum=GLFW.GLFW_KEY_UNKNOWN;
-                break;
-            case"1":
-                keysum=GLFW.GLFW_KEY_1;
-                break;
-            case"2":
-                keysum=GLFW.GLFW_KEY_2;
-                break;
-            case"3":
-                keysum=GLFW.GLFW_KEY_3;
-                break;
-            case"4":
-                keysum=GLFW.GLFW_KEY_4;
-                break;
-            case"5":
-                keysum=GLFW.GLFW_KEY_5;
-                break;
-            case"6":
-                keysum=GLFW.GLFW_KEY_6;
-                break;
-            case"7":
-                keysum=GLFW.GLFW_KEY_7;
-                break;
-            case"8":
-                keysum=GLFW.GLFW_KEY_8;
-                break;
-            case"9":
-                keysum=GLFW.GLFW_KEY_9;
-                break;
-            case"0":
-                keysum=GLFW.GLFW_KEY_0;
-                break;
-            case"+":
-                keysum=GLFW.GLFW_KEY_KP_ADD;
-                break;
-            case"a":
-                keysum=GLFW.GLFW_KEY_A;
-                break;
-            case"'":
-                keysum=GLFW.GLFW_KEY_APOSTROPHE;
-                break;
-            case"b":
-                keysum=GLFW.GLFW_KEY_B;
-                break;
-            case"\\":
-                keysum=GLFW.GLFW_KEY_BACKSLASH;
-                break;
-            case"backspace":
-                keysum=GLFW.GLFW_KEY_BACKSPACE;
-                break;
-            case"<-":
-                keysum=GLFW.GLFW_KEY_BACKSPACE;
-                break;
-            case"c":
-                keysum=GLFW.GLFW_KEY_C;
-                break;
-            case"caps":
-                keysum=GLFW.GLFW_KEY_CAPS_LOCK;
-                break;
-            case"capslock":
-                keysum=GLFW.GLFW_KEY_CAPS_LOCK;
-                break;
-            case"caps lock":
-                keysum=GLFW.GLFW_KEY_CAPS_LOCK;
-                break;
-            case",":
-                keysum=GLFW.GLFW_KEY_COMMA;
-                break;
-            case"d":
-                keysum=GLFW.GLFW_KEY_D;
-                break;
-            case"delete":
-                keysum=GLFW.GLFW_KEY_DELETE;
-                break;
-            case"down":
-                keysum=GLFW.GLFW_KEY_DOWN;
-                break;
-            case"e":
-                keysum=GLFW.GLFW_KEY_E;
-                break;
-            case"end":
-                keysum=GLFW.GLFW_KEY_END;
-                break;
-            case"enter":
-                keysum=GLFW.GLFW_KEY_ENTER;
-                break;
-            case"=":
-                keysum=GLFW.GLFW_KEY_EQUAL;
-                break;
-            case"escape":
-                keysum=GLFW.GLFW_KEY_ESCAPE;
-                break;
-            case"esc":
-                keysum=GLFW.GLFW_KEY_ESCAPE;
-                break;
-            case"f":
-                keysum=GLFW.GLFW_KEY_F;
-                break;
-            case"f1":
-                keysum=GLFW.GLFW_KEY_F1;
-                break;
-            case"f2":
-                keysum=GLFW.GLFW_KEY_F2;
-                break;
-            case"f3":
-                keysum=GLFW.GLFW_KEY_F3;
-                break;
-            case"f4":
-                keysum=GLFW.GLFW_KEY_F4;
-                break;
-            case"f5":
-                keysum=GLFW.GLFW_KEY_F5;
-                break;
-            case"f6":
-                keysum=GLFW.GLFW_KEY_F6;
-                break;
-            case"f7":
-                keysum=GLFW.GLFW_KEY_F7;
-                break;
-            case"f8":
-                keysum=GLFW.GLFW_KEY_F8;
-                break;
-            case"f9":
-                keysum=GLFW.GLFW_KEY_F9;
-                break;
-            case"f10":
-                keysum=GLFW.GLFW_KEY_F10;
-                break;
-            case"f11":
-                keysum=GLFW.GLFW_KEY_F11;
-                break;
-            case"f12":
-                keysum=GLFW.GLFW_KEY_F12;
-                break;
-            case"f13":
-                keysum=GLFW.GLFW_KEY_F13;
-                break;
-            case"f14":
-                keysum=GLFW.GLFW_KEY_F14;
-                break;
-            case"f15":
-                keysum=GLFW.GLFW_KEY_F15;
-                break;
-            case"f16":
-                keysum=GLFW.GLFW_KEY_F16;
-                break;
-            case"f17":
-                keysum=GLFW.GLFW_KEY_F17;
-                break;
-            case"f18":
-                keysum=GLFW.GLFW_KEY_F18;
-                break;
-            case"f19":
-                keysum=GLFW.GLFW_KEY_F19;
-                break;
-            case"f20":
-                keysum=GLFW.GLFW_KEY_F20;
-                break;
-            case"f21":
-                keysum=GLFW.GLFW_KEY_F21;
-                break;
-            case"f22":
-                keysum=GLFW.GLFW_KEY_F22;
-                break;
-            case"f23":
-                keysum=GLFW.GLFW_KEY_F23;
-                break;
-            case"f24":
-                keysum=GLFW.GLFW_KEY_F24;
-                break;
-            case"f25":
-                keysum=GLFW.GLFW_KEY_F25;
-                break;
-            case"g":
-                keysum=GLFW.GLFW_KEY_G;
-                break;
-            case"`":
-                keysum=GLFW.GLFW_KEY_GRAVE_ACCENT;
-                break;
-            case"h":
-                keysum=GLFW.GLFW_KEY_H;
-                break;
-            case"home":
-                keysum=GLFW.GLFW_KEY_HOME;
-                break;
-            case"i":
-                keysum=GLFW.GLFW_KEY_I;
-                break;
-            case"insert":
-                keysum=GLFW.GLFW_KEY_INSERT;
-                break;
-            case"j":
-                keysum=GLFW.GLFW_KEY_J;
-                break;
-            case"k":
-                keysum=GLFW.GLFW_KEY_K;
-                break;
-            case"l":
-                keysum=GLFW.GLFW_KEY_L;
-                break;
-            case"last":
-                keysum=GLFW.GLFW_KEY_LAST;
-                break;
-            case"left":
-                keysum=GLFW.GLFW_KEY_LEFT;
-                break;
-            case"left alt":
-                keysum=GLFW.GLFW_KEY_LEFT_ALT;
-                break;
-            case"alt":
-                keysum=GLFW.GLFW_KEY_LEFT_ALT;
-                break;
-            case"lalt":
-                keysum=GLFW.GLFW_KEY_LEFT_ALT;
-                break;
-            case"[":
-                keysum=GLFW.GLFW_KEY_LEFT_BRACKET;
-                break;
-            case"left ctrl":
-                keysum=GLFW.GLFW_KEY_LEFT_CONTROL;
-                break;
-            case"ctrl":
-                keysum=GLFW.GLFW_KEY_LEFT_CONTROL;
-                break;
-            case"lctrl":
-                keysum=GLFW.GLFW_KEY_LEFT_CONTROL;
-                break;
-            case"left shift":
-                keysum=GLFW.GLFW_KEY_LEFT_SHIFT;
-                break;
-            case"shift":
-                keysum=GLFW.GLFW_KEY_LEFT_SHIFT;
-                break;
-            case"lshift":
-                keysum=GLFW.GLFW_KEY_LEFT_SHIFT;
-                break;
-            case"left super":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"super":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"lsuper":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"left win":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"win":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"lwin":
-                keysum=GLFW.GLFW_KEY_LEFT_SUPER;
-                break;
-            case"m":
-                keysum=GLFW.GLFW_KEY_M;
-                break;
-            case"menu":
-                keysum=GLFW.GLFW_KEY_MENU;
-                break;
-            case"-":
-                keysum=GLFW.GLFW_KEY_MINUS;
-                break;
-            case"n":
-                keysum=GLFW.GLFW_KEY_N;
-                break;
-            case"num lock":
-                keysum=GLFW.GLFW_KEY_NUM_LOCK;
-                break;
-            case"numlock":
-                keysum=GLFW.GLFW_KEY_NUM_LOCK;
-                break;
-            case"num":
-                keysum=GLFW.GLFW_KEY_NUM_LOCK;
-                break;
-            case"o":
-                keysum=GLFW.GLFW_KEY_O;
-                break;
-            case"p":
-                keysum=GLFW.GLFW_KEY_P;
-                break;
-            case"page down":
-                keysum=GLFW.GLFW_KEY_PAGE_DOWN;
-                break;
-            case"pagedown":
-                keysum=GLFW.GLFW_KEY_PAGE_DOWN;
-                break;
-            case"page up":
-                keysum=GLFW.GLFW_KEY_PAGE_UP;
-                break;
-            case"pageup":
-                keysum=GLFW.GLFW_KEY_PAGE_UP;
-                break;
-            case"pause":
-                keysum=GLFW.GLFW_KEY_PAUSE;
-                break;
-            case".":
-                keysum=GLFW.GLFW_KEY_PERIOD;
-                break;
-            case"print screen":
-                keysum=GLFW.GLFW_KEY_PRINT_SCREEN;
-                break;
-            case"printscreen":
-                keysum=GLFW.GLFW_KEY_PRINT_SCREEN;
-                break;
-            case"q":
-                keysum=GLFW.GLFW_KEY_Q;
-                break;
-            case"r":
-                keysum=GLFW.GLFW_KEY_R;
-                break;
-            case"right":
-                keysum=GLFW.GLFW_KEY_RIGHT;
-                break;
-            case"right alt":
-                keysum=GLFW.GLFW_KEY_RIGHT_ALT;
-                break;
-            case"ralt":
-                keysum=GLFW.GLFW_KEY_RIGHT_ALT;
-                break;
-            case"]":
-                keysum=GLFW.GLFW_KEY_RIGHT_BRACKET;
-                break;
-            case"right ctrl":
-                keysum=GLFW.GLFW_KEY_RIGHT_CONTROL;
-                break;
-            case"rctrl":
-                keysum=GLFW.GLFW_KEY_RIGHT_CONTROL;
-                break;
-            case"right shift":
-                keysum=GLFW.GLFW_KEY_RIGHT_SHIFT;
-                break;
-            case"rshift":
-                keysum=GLFW.GLFW_KEY_RIGHT_SHIFT;
-                break;
-            case"right super":
-                keysum=GLFW.GLFW_KEY_RIGHT_SUPER;
-                break;
-            case"rsuper":
-                keysum=GLFW.GLFW_KEY_RIGHT_SUPER;
-                break;
-            case"s":
-                keysum=GLFW.GLFW_KEY_S;
-                break;
-            case"scroll lock":
-                keysum=GLFW.GLFW_KEY_SCROLL_LOCK;
-                break;
-            case"scrolllock":
-                keysum=GLFW.GLFW_KEY_SCROLL_LOCK;
-                break;
-            case";":
-                keysum=GLFW.GLFW_KEY_SEMICOLON;
-                break;
-            case"/":
-                keysum=GLFW.GLFW_KEY_SLASH;
-                break;
-            case" ":
-                keysum=GLFW.GLFW_KEY_SPACE;
-                break;
-            case"space":
-                keysum=GLFW.GLFW_KEY_SPACE;
-                break;
-            case"t":
-                keysum=GLFW.GLFW_KEY_T;
-                break;
-            case"tab":
-                keysum=GLFW.GLFW_KEY_TAB;
-                break;
-            case"  ":
-                keysum=GLFW.GLFW_KEY_TAB;
-                break;
-            case"   ":
-                keysum=GLFW.GLFW_KEY_TAB;
-                break;
-            case"    ":
-                keysum=GLFW.GLFW_KEY_TAB;
-                break;
-            case"u":
-                keysum=GLFW.GLFW_KEY_U;
-                break;
-            case"unknown":
-                keysum=GLFW.GLFW_KEY_UNKNOWN;
-                break;
-            case"up":
-                keysum=GLFW.GLFW_KEY_UP;
-                break;
-            case"v":
-                keysum=GLFW.GLFW_KEY_V;
-                break;
-            case"w":
-                keysum=GLFW.GLFW_KEY_W;
-                break;
-            case"x":
-                keysum=GLFW.GLFW_KEY_X;
-                break;
-            case"y":
-                keysum=GLFW.GLFW_KEY_Y;
-                break;
-            case"z":
-                keysum=GLFW.GLFW_KEY_Z;
-                break;
+            case"":return GLFW.GLFW_KEY_UNKNOWN;
+            case"1":return GLFW.GLFW_KEY_1;
+            case"2":return GLFW.GLFW_KEY_2;
+            case"3":return GLFW.GLFW_KEY_3;
+            case"4":return GLFW.GLFW_KEY_4;
+            case"5":return GLFW.GLFW_KEY_5;
+            case"6":return GLFW.GLFW_KEY_6;
+            case"7":return GLFW.GLFW_KEY_7;
+            case"8":return GLFW.GLFW_KEY_8;
+            case"9":return GLFW.GLFW_KEY_9;
+            case"0":return GLFW.GLFW_KEY_0;
+            case"+":return GLFW.GLFW_KEY_KP_ADD;
+            case"a":return GLFW.GLFW_KEY_A;
+            case"'":return GLFW.GLFW_KEY_APOSTROPHE;
+            case"b":return GLFW.GLFW_KEY_B;
+            case"\\":return GLFW.GLFW_KEY_BACKSLASH;
+            case"backspace":case"<-":return GLFW.GLFW_KEY_BACKSPACE;
+            case"c":return GLFW.GLFW_KEY_C;
+            case"caps":return GLFW.GLFW_KEY_CAPS_LOCK;
+            case"capslock":return GLFW.GLFW_KEY_CAPS_LOCK;
+            case"caps lock":return GLFW.GLFW_KEY_CAPS_LOCK;
+            case",":return GLFW.GLFW_KEY_COMMA;
+            case"d":return GLFW.GLFW_KEY_D;
+            case"delete":return GLFW.GLFW_KEY_DELETE;
+            case"down":return GLFW.GLFW_KEY_DOWN;
+            case"e":return GLFW.GLFW_KEY_E;
+            case"end":return GLFW.GLFW_KEY_END;
+            case"enter":return GLFW.GLFW_KEY_ENTER;
+            case"=":return GLFW.GLFW_KEY_EQUAL;
+            case"escape":return GLFW.GLFW_KEY_ESCAPE;
+            case"esc":return GLFW.GLFW_KEY_ESCAPE;
+            case"f":return GLFW.GLFW_KEY_F;
+            case"f1":return GLFW.GLFW_KEY_F1;
+            case"f2":return GLFW.GLFW_KEY_F2;
+            case"f3":return GLFW.GLFW_KEY_F3;
+            case"f4":return GLFW.GLFW_KEY_F4;
+            case"f5":return GLFW.GLFW_KEY_F5;
+            case"f6":return GLFW.GLFW_KEY_F6;
+            case"f7":return GLFW.GLFW_KEY_F7;
+            case"f8":return GLFW.GLFW_KEY_F8;
+            case"f9":return GLFW.GLFW_KEY_F9;
+            case"f10":return GLFW.GLFW_KEY_F10;
+            case"f11":return GLFW.GLFW_KEY_F11;
+            case"f12":return GLFW.GLFW_KEY_F12;
+            case"f13":return GLFW.GLFW_KEY_F13;
+            case"f14":return GLFW.GLFW_KEY_F14;
+            case"f15":return GLFW.GLFW_KEY_F15;
+            case"f16":return GLFW.GLFW_KEY_F16;
+            case"f17":return GLFW.GLFW_KEY_F17;
+            case"f18":return GLFW.GLFW_KEY_F18;
+            case"f19":return GLFW.GLFW_KEY_F19;
+            case"f20":return GLFW.GLFW_KEY_F20;
+            case"f21":return GLFW.GLFW_KEY_F21;
+            case"f22":return GLFW.GLFW_KEY_F22;
+            case"f23":return GLFW.GLFW_KEY_F23;
+            case"f24":return GLFW.GLFW_KEY_F24;
+            case"f25":return GLFW.GLFW_KEY_F25;
+            case"g":return GLFW.GLFW_KEY_G;
+            case"`":return GLFW.GLFW_KEY_GRAVE_ACCENT;
+            case"h":return GLFW.GLFW_KEY_H;
+            case"home":return GLFW.GLFW_KEY_HOME;
+            case"i":return GLFW.GLFW_KEY_I;
+            case"insert":return GLFW.GLFW_KEY_INSERT;
+            case"j":return GLFW.GLFW_KEY_J;
+            case"k":return GLFW.GLFW_KEY_K;
+            case"l":return GLFW.GLFW_KEY_L;
+            case"last":return GLFW.GLFW_KEY_LAST;
+            case"left":return GLFW.GLFW_KEY_LEFT;
+            case"left alt":return GLFW.GLFW_KEY_LEFT_ALT;
+            case"alt":return GLFW.GLFW_KEY_LEFT_ALT;
+            case"lalt":return GLFW.GLFW_KEY_LEFT_ALT;
+            case"[":return GLFW.GLFW_KEY_LEFT_BRACKET;
+            case"left ctrl":return GLFW.GLFW_KEY_LEFT_CONTROL;
+            case"ctrl":return GLFW.GLFW_KEY_LEFT_CONTROL;
+            case"lctrl":return GLFW.GLFW_KEY_LEFT_CONTROL;
+            case"left shift":return GLFW.GLFW_KEY_LEFT_SHIFT;
+            case"shift":return GLFW.GLFW_KEY_LEFT_SHIFT;
+            case"lshift":return GLFW.GLFW_KEY_LEFT_SHIFT;
+            case"left super":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"super":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"lsuper":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"left win":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"win":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"lwin":return GLFW.GLFW_KEY_LEFT_SUPER;
+            case"m":return GLFW.GLFW_KEY_M;
+            case"menu":return GLFW.GLFW_KEY_MENU;
+            case"-":return GLFW.GLFW_KEY_MINUS;
+            case"n":return GLFW.GLFW_KEY_N;
+            case"num lock":return GLFW.GLFW_KEY_NUM_LOCK;
+            case"numlock":return GLFW.GLFW_KEY_NUM_LOCK;
+            case"num":return GLFW.GLFW_KEY_NUM_LOCK;
+            case"o":return GLFW.GLFW_KEY_O;
+            case"p":return GLFW.GLFW_KEY_P;
+            case"page down":return GLFW.GLFW_KEY_PAGE_DOWN;
+            case"pagedown":return GLFW.GLFW_KEY_PAGE_DOWN;
+            case"page up":return GLFW.GLFW_KEY_PAGE_UP;
+            case"pageup":return GLFW.GLFW_KEY_PAGE_UP;
+            case"pause":return GLFW.GLFW_KEY_PAUSE;
+            case".":return GLFW.GLFW_KEY_PERIOD;
+            case"print screen":return GLFW.GLFW_KEY_PRINT_SCREEN;
+            case"printscreen":return GLFW.GLFW_KEY_PRINT_SCREEN;
+            case"q":return GLFW.GLFW_KEY_Q;
+            case"r":return GLFW.GLFW_KEY_R;
+            case"right":return GLFW.GLFW_KEY_RIGHT;
+            case"right alt":return GLFW.GLFW_KEY_RIGHT_ALT;
+            case"ralt":return GLFW.GLFW_KEY_RIGHT_ALT;
+            case"]":return GLFW.GLFW_KEY_RIGHT_BRACKET;
+            case"right ctrl":return GLFW.GLFW_KEY_RIGHT_CONTROL;
+            case"rctrl":return GLFW.GLFW_KEY_RIGHT_CONTROL;
+            case"right shift":return GLFW.GLFW_KEY_RIGHT_SHIFT;
+            case"rshift":return GLFW.GLFW_KEY_RIGHT_SHIFT;
+            case"right super":return GLFW.GLFW_KEY_RIGHT_SUPER;
+            case"rsuper":return GLFW.GLFW_KEY_RIGHT_SUPER;
+            case"s":return GLFW.GLFW_KEY_S;
+            case"scroll lock":return GLFW.GLFW_KEY_SCROLL_LOCK;
+            case"scrolllock":return GLFW.GLFW_KEY_SCROLL_LOCK;
+            case";":return GLFW.GLFW_KEY_SEMICOLON;
+            case"/":return GLFW.GLFW_KEY_SLASH;
+            case" ":return GLFW.GLFW_KEY_SPACE;
+            case"space":return GLFW.GLFW_KEY_SPACE;
+            case"t":return GLFW.GLFW_KEY_T;
+            case"tab":return GLFW.GLFW_KEY_TAB;
+            case"  ":return GLFW.GLFW_KEY_TAB;
+            case"   ":return GLFW.GLFW_KEY_TAB;
+            case"    ":return GLFW.GLFW_KEY_TAB;
+            case"u":return GLFW.GLFW_KEY_U;
+            case"unknown":return GLFW.GLFW_KEY_UNKNOWN;
+            case"up":return GLFW.GLFW_KEY_UP;
+            case"v":return GLFW.GLFW_KEY_V;
+            case"w":return GLFW.GLFW_KEY_W;
+            case"x":return GLFW.GLFW_KEY_X;
+            case"y":return GLFW.GLFW_KEY_Y;
+            case"z":return GLFW.GLFW_KEY_Z;
+            default:
+                NobodyLib.LOGGER.warn("Unknown key string: "+key);
+                return GLFW.GLFW_KEY_UNKNOWN;
         }
-        if(keysum==-2){
-            NobodyLib.LOGGER.warn("Key \""+key+"\" was not found");
-            keysum=GLFW.GLFW_KEY_UNKNOWN;
-        }
-        return keysum;
     }
 }

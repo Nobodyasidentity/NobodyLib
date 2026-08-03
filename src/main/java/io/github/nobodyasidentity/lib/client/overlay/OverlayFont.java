@@ -19,7 +19,7 @@ public final class OverlayFont{
         GLYPHS.put(c,new int[]{r0,r1,r2,r3,r4,r5,r6});
     }
     public static boolean hasGlyph(char c){
-        return GLYPHS.containsKey(Character.toUpperCase(c));
+        return GLYPHS.containsKey(c);
     }
     public static void drawText(String text,float x,float y,float pixelSize,int argb){
         float cursorX=x;
@@ -32,7 +32,7 @@ public final class OverlayFont{
                 cursorY+=(GLYPH_HEIGHT+LINE_SPACING)*pixelSize;
                 continue;
             }
-            int[] glyph=GLYPHS.get(Character.toUpperCase(c));
+            int[] glyph=GLYPHS.get(c);
             if (glyph!=null){
                 drawGlyph(glyph,cursorX,cursorY,pixelSize,argb);
             } else {

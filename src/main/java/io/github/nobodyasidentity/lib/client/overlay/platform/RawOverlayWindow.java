@@ -18,6 +18,7 @@ public final class RawOverlayWindow{
     private static final int WS_EX_NOACTIVATE=0x08000000;
     private static final int WS_EX_TOPMOST=0x00000008;
     private static final int SW_SHOWNOACTIVATE=4;
+    private static final int SW_HIDE=0;
     private static final WindowProc WND_PROC=(hwnd,uMsg,wParam,lParam)->User32.INSTANCE.DefWindowProc(hwnd,uMsg,wParam,lParam);
 
     private static HWND hwnd;
@@ -27,7 +28,6 @@ public final class RawOverlayWindow{
 
     public static void create(int x,int y,int width,int height){
         if(hwnd!=null)return;
-
         HMODULE hModule=Kernel32.INSTANCE.GetModuleHandle(null);
         HINSTANCE hInstance=new HINSTANCE();
         hInstance.setPointer(hModule.getPointer());
@@ -44,7 +44,6 @@ public final class RawOverlayWindow{
             System.err.println("[NobodyLib] CreateWindowEx failed, error="+Kernel32.INSTANCE.GetLastError());
             return;
         }
-
         lastX=x;
         lastY=y;
         User32.INSTANCE.ShowWindow(hwnd,SW_SHOWNOACTIVATE);
@@ -57,4 +56,8 @@ public final class RawOverlayWindow{
     public static HWND getHwnd(){return hwnd;}
     public static int getX(){return lastX;}
     public static int getY(){return lastY;}
+    public static void setVisible(boolean visible){
+        if(hwnd==null)return;
+        User32.INSTANCE.ShowWindow(hwnd,visible?SW_SHOWNOACTIVATE:SW_HIDE);
+    }
 }

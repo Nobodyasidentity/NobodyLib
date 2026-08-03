@@ -14,17 +14,17 @@ import static org.lwjgl.opengl.GL30.*;
 
 public final class OverlayRenderer{
     private static ByteBuffer pixelBuffer;
-
     private static int fbo=0;
     private static int fboTexture=0;
     private static int fboWidth=-1;
     private static int fboHeight=-1;
-
     private OverlayRenderer(){}
 
     public static void renderFrame(long mcWindowHandle){
         long overlay=OverlayWindow.getHandle();
         if(overlay==-1L)return;
+        Overlay.updateVisibility(mcWindowHandle);
+        if(!Overlay.isVisible())return;
 
         glfwMakeContextCurrent(overlay);
         GL.setCapabilities(OverlayWindow.getOverlayCapabilities());
@@ -51,14 +51,11 @@ public final class OverlayRenderer{
         glfwMakeContextCurrent(mcWindowHandle);
         GL.setCapabilities(OverlayWindow.getMcCapabilities());
     }
-
     private static void renderAndPresentWindows(int width,int height){
         if(width<=0||height<=0)return;
-
         ensureFbo(width,height);
         glBindFramebuffer(GL_FRAMEBUFFER,fbo);
         glViewport(0,0,width,height);
-
         glClearColor(0f,0f,0f,0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_BLEND);
@@ -68,7 +65,6 @@ public final class OverlayRenderer{
         if(NobodyLibConfigs.CLIENT.get().overlay.outline_enabled){
             drawDebugOutline(width,height);
         }
-
         int needed=width*height*4;
         if(pixelBuffer==null||pixelBuffer.capacity()<needed){
             pixelBuffer=ByteBuffer.allocateDirect(needed);
@@ -78,7 +74,6 @@ public final class OverlayRenderer{
         glBindFramebuffer(GL_FRAMEBUFFER,0);
         Win32LayeredWindow.present(RawOverlayWindow.getX(),RawOverlayWindow.getY(),width,height,pixelBuffer);
     }
-
     private static void setupPixelProjection(int width,int height){
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -86,7 +81,6 @@ public final class OverlayRenderer{
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
     }
-
     private static void drawDebugOutline(int width,int height){
         glDisable(GL_BLEND);
         glLineWidth(2f);
@@ -100,15 +94,12 @@ public final class OverlayRenderer{
         glColor4f(1f,1f,1f,1f);
         glEnable(GL_BLEND);
     }
-
     private static void ensureFbo(int width,int height){
         if(fbo!=0&&width==fboWidth&&height==fboHeight)return;
-
         if(fbo!=0){
             glDeleteFramebuffers(fbo);
             glDeleteTextures(fboTexture);
         }
-
         fboTexture=glGenTextures();
         glBindTexture(GL_TEXTURE_2D,fboTexture);
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,(ByteBuffer)null);
@@ -127,5 +118,4 @@ public final class OverlayRenderer{
         fboWidth=width;
         fboHeight=height;
     }
-
 }

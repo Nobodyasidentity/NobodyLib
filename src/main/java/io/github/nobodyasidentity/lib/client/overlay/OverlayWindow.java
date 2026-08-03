@@ -40,13 +40,16 @@ public final class OverlayWindow{
         glfwMakeContextCurrent(mcWindowHandle);
         GL.setCapabilities(mcCapabilities);
     }
-
     public static void show(){
         if(handle!=-1L){
             glfwShowWindow(handle);
         }
     }
-
+    public static void hide(){
+        if(handle!=-1L){
+            glfwHideWindow(handle);
+        }
+    }
     public static long getHandle(){return handle;}
     public static GLCapabilities getOverlayCapabilities(){return overlayCapabilities;}
     public static GLCapabilities getMcCapabilities(){return mcCapabilities;}

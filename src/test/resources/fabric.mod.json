@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"id": "example_mod",
+	"version": "0",
+	"name": "Example Mod",
+	"description": "Example Mod for NobodyLib",
+	"authors": [
+		"Nobodyasidentity"
+	],
+	"icon": "assets/example_mod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.example.ExampleMod"
+		],
+		"client": [
+			"com.example.ExampleModClient"
+		]
+	},
+	"depends": {
+		"nobodylib": "*"
+	}
+}

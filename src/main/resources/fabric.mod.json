@@ -32,7 +32,8 @@
 	},
 	"suggests": {
 		"cloth-config": "*",
-		"modmenu": "*"
+		"modmenu": "*",
+		"cwb": "*"
 	},
 	"custom": {
 		"modmenu": {

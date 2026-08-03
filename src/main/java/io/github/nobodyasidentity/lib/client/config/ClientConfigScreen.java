@@ -1,6 +1,7 @@
 package io.github.nobodyasidentity.lib.client.config;
 
 import io.github.nobodyasidentity.lib.client.overlay.OverlayDisplay;
+import io.github.nobodyasidentity.lib.client.overlay.OverlayKeybinds;
 import io.github.nobodyasidentity.lib.config.ClientConfig;
 import me.shedaniel.clothconfig2.api.Requirement;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -9,6 +10,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 public class ClientConfigScreen{
@@ -25,6 +27,16 @@ public class ClientConfigScreen{
                 .build();
         overlay.setExpanded(true).add(overlayToggle);
         overlay.add(
+            entryBuilder.startKeyCodeField(Component.translatable(OverlayKeybinds.toggleVisibility.getName()),OverlayKeybinds.toggleVisibility.getDefaultKey())
+                .setDefaultValue(OverlayKeybinds.toggleVisibility.getDefaultKey())
+                .setTooltip(Component.translatable(OverlayKeybinds.toggleVisibility.getName()+".desc"))
+                .setKeySaveConsumer(value->{
+                    OverlayKeybinds.toggleVisibility.setKey(value);
+                })
+                .setDisplayRequirement(Requirement.isTrue(overlayToggle::getValue))
+                .build()
+        );
+        overlay.add(
             entryBuilder.startBooleanToggle(translateable("option.overlay.display"),config.overlay.display_enabled)
                 .setDefaultValue(false)
                 .setTooltip(translateable("option.overlay.display.desc"))
@@ -36,6 +48,14 @@ public class ClientConfigScreen{
                         OverlayDisplay.unregister();
                     }
                 })
+                .setDisplayRequirement(Requirement.isTrue(overlayToggle::getValue))
+                .build()
+        );
+        overlay.add(
+            entryBuilder.startFloatField(translateable("option.overlay.display_scale"),config.overlay.display_scale)
+                .setDefaultValue(1.0f)
+                .setTooltip(translateable("option.overlay.display_scale.desc"))
+                .setSaveConsumer(value->config.overlay.display_scale=value)
                 .setDisplayRequirement(Requirement.isTrue(overlayToggle::getValue))
                 .build()
         );

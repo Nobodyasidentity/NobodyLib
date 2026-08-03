@@ -6,6 +6,13 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+sourceSets {
+	test {
+		compileClasspath += main.compileClasspath + main.output
+		runtimeClasspath += main.runtimeClasspath + main.output
+	}
+}
+
 repositories {
 	maven {
 		name = "Shedaniel"
@@ -16,16 +23,26 @@ repositories {
 		url = "https://maven.terraformersmc.com/"
 	}
 	exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup("maven.modrinth")
-        }
-    }
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup("maven.modrinth")
+		}
+	}
+}
+
+loom {
+	runs {
+		testClient {
+			client()
+			name "Minecraft Client - Test Mode"
+			source sourceSets.test
+		}
+	}
 }
 
 fabricApi {
@@ -40,14 +57,16 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	
 	implementation "net.java.dev.jna:jna:5.15.0"
-    implementation "net.java.dev.jna:jna-platform:5.15.0"
-    include "net.java.dev.jna:jna:5.15.0"
-    include "net.java.dev.jna:jna-platform:5.15.0"
+	implementation "net.java.dev.jna:jna-platform:5.15.0"
+	include "net.java.dev.jna:jna:5.15.0"
+	include "net.java.dev.jna:jna-platform:5.15.0"
 
-    compileOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"){
-        exclude(group:"net.fabricmc.fabric-api")
-    }
-    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	compileOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"){
+		exclude(group:"net.fabricmc.fabric-api")
+	}
+	compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	
+	testImplementation sourceSets.main.output
 }
 
 processResources {
@@ -73,6 +92,11 @@ java {
 jar {
 	def projectName = project.name
 	inputs.property "projectName", projectName
+	manifest {
+        attributes(
+            'Main-Class': "${project.maven_group}.NobodyLibJarMain"
+        )
+    }
 }
 
 publishing {

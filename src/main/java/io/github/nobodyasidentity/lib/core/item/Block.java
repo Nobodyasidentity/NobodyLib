@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import java.util.function.Function;
 
@@ -26,15 +25,15 @@ public class Block extends net.minecraft.world.level.block.Block{
         T block=factory.apply(properties);
         return Registry.register(BuiltInRegistries.BLOCK,id,block);
     }
-    public static BlockItem register(net.minecraft.world.level.block.Block block){
+    public static Item register(net.minecraft.world.level.block.Block block){
         return register(block,new net.minecraft.world.item.Item.Properties());
     }
-    public static BlockItem register(net.minecraft.world.level.block.Block block, net.minecraft.world.item.Item.Properties properties){
+    public static Item register(net.minecraft.world.level.block.Block block, net.minecraft.world.item.Item.Properties properties){
         Identifier id=BuiltInRegistries.BLOCK.getKey(block);
         if(id==null){throw new IllegalStateException("Block must be registered before creating BlockItem");}
         ResourceKey<net.minecraft.world.item.Item>itemKey=ResourceKey.create(Registries.ITEM,id);
-        properties.setId(itemKey);
-        BlockItem item=new BlockItem(block,properties);
+        properties.setId(itemKey).useBlockDescriptionPrefix();
+        Item item=new Item(block,properties);
         return Registry.register(BuiltInRegistries.ITEM,id,item);
     }
 }
