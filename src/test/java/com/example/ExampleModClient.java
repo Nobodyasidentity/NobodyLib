@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class ExampleModClient implements ClientModInitializer{
     @Override
     public void onInitializeClient(){
-        Overlay.register("esp_test",(width,height)->{
+        Overlay.register("esp_example",(width,height)->{
             Minecraft mc=Minecraft.getInstance();
             Entity self=null;
             if(mc.player!=null)self=mc.player.getLivingEntity();
@@ -23,15 +23,13 @@ public class ExampleModClient implements ClientModInitializer{
                     double x=entity.xo+(entity.getX()-entity.xo)*tickDelta;
                     double y=entity.yo+(entity.getY()-entity.yo)*tickDelta;
                     double z=entity.zo+(entity.getZ()-entity.zo)*tickDelta;
-                    OverlayProjection.ScreenPos[] corners=OverlayProjection.getRotatedBoundingBox(x,y,z,entity.getBbWidth(),entity.getBbHeight(),0.0f,width,height);
-                    if(corners!=null){
-                        draw3DBox(corners);
-                    }
+                    OverlayProjection.ScreenPos[]corners=OverlayProjection.getRotatedBoundingBox(x,y,z,entity.getBbWidth(),entity.getBbHeight(),0.0f,width,height);
+                    if(corners!=null)draw3DBox(corners);
                 }
             }
         });
     }
-    private static void draw3DBox(OverlayProjection.ScreenPos[] c){
+    private static void draw3DBox(OverlayProjection.ScreenPos[]c){
         glDisable(GL_TEXTURE_2D);
         glLineWidth(2.0f);
         glColor4f(1.0f,0.0f,0.0f,1.0f);

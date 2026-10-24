@@ -6,7 +6,7 @@ import io.github.nobodyasidentity.lib.util.Py;
 public class Logger{
     // other
     private final org.slf4j.Logger logger;
-    private Logger(String modid){logger=LoggerFactory.getLogger(modid);}
+    public Logger(String modid){logger=LoggerFactory.getLogger(modid);}
     public static Logger create(String modid){return new Logger(modid);}
     public static Logger clone(org.slf4j.Logger supLogger){return new Logger(supLogger.getName());}
     public final String getName(){return logger.getName();}

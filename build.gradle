@@ -45,6 +45,10 @@ loom {
 	}
 }
 
+tasks.named('test') {
+    failOnNoDiscoveredTests = false
+}
+
 fabricApi {
 	configureDataGeneration {
 		client = true
@@ -94,7 +98,7 @@ jar {
 	inputs.property "projectName", projectName
 	manifest {
         attributes(
-            'Main-Class': "${project.maven_group}.NobodyLibJarMain"
+            'Main-Class': "io.github.nobodyasidentity.nobodylib.NobodyLibJarMain"
         )
     }
 }

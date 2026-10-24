@@ -18,7 +18,7 @@ public final class OverlayProjection{
         Vec3 camPos=camera.position();
         float camYaw=camera.entity().getYRot();
         float camPitch=camera.entity().getXRot();
-        if (camera.isDetached()&&mc.options.getCameraType().isMirrored()){
+        if(camera.isDetached()&&mc.options.getCameraType().isMirrored()){
             camYaw+=180.0f;
             camPitch=-camPitch;
         }
@@ -38,7 +38,7 @@ public final class OverlayProjection{
         double sy=((1.0-ndcY)/2.0)*overlayHeight;
         return new ScreenPos(sx,sy);
     }
-    public static ScreenPos[] getRotatedBoundingBox(double targetX,double targetY,double targetZ,double width,double height,float targetYaw,float targetPitch,int overlayWidth,int overlayHeight){
+    public static ScreenPos[]getRotatedBoundingBox(double targetX,double targetY,double targetZ,double width,double height,float targetYaw,float targetPitch,int overlayWidth,int overlayHeight){
         Minecraft mc=Minecraft.getInstance();
         if(mc.player==null||mc.level==null)return null;
         Camera camera=mc.gameRenderer.mainCamera();
@@ -85,7 +85,10 @@ public final class OverlayProjection{
         }
         return screenCorners;
     }
-    public static ScreenPos[] getRotatedBoundingBox(double targetX,double targetY,double targetZ,double width,double height,float targetYaw,int overlayWidth,int overlayHeight){
+    public static ScreenPos[]getRotatedBoundingBox(double targetX,double targetY,double targetZ,double width,double height,float targetYaw,int overlayWidth,int overlayHeight){
         return getRotatedBoundingBox(targetX,targetY,targetZ,width,height,targetYaw,0.0f,overlayWidth,overlayHeight);
+    }
+    public static ScreenPos[]getRotatedBoundingBox(int targetX,int targetY,int targetZ,int overlayWidth,int overlayHeight){
+        return getRotatedBoundingBox((double)targetX,(double)targetY,(double)targetZ,1.0f,1.0f,0.0f,0.0f,overlayWidth,overlayHeight);
     }
 }

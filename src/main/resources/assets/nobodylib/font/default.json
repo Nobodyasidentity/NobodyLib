@@ -1,0 +1,11 @@
+{
+	"providers": [
+		{
+			"type": "nfont",
+			"file": "minecraft.nfont"
+		},
+		{
+			"type": "builtin"
+		}
+	]
+}

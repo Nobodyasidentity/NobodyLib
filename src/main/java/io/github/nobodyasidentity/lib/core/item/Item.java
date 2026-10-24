@@ -1,9 +1,9 @@
 package io.github.nobodyasidentity.lib.core.item;
 
-import io.github.nobodyasidentity.lib.NobodyLib;
+import io.github.nobodyasidentity.nobodylib.NobodyLib;
 import io.github.nobodyasidentity.lib.core.sound.Sound;
-import io.github.nobodyasidentity.lib.datagen.GenProvider;
-import io.github.nobodyasidentity.lib.datagen.ItemModelGen;
+import io.github.nobodyasidentity.nobodylib.datagen.GenProvider;
+import io.github.nobodyasidentity.nobodylib.datagen.ItemModelGen;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -11,34 +11,16 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.level.block.Block;
 
-public class Item extends net.minecraft.world.item.BlockItem{
-    // Custom Item stuff
-    private final boolean is_block;
+public class Item extends net.minecraft.world.item.Item{
     public static void init(){
         NobodyLib.LOGGER.info("Initializing items...");
         NobodyLib.LOGGER.info("Initialized items!");
     }
     public Item(net.minecraft.world.item.Item.Properties properties){
-        super(null,properties);
-        this.is_block=false;
-    }
-    public Item(Block block,net.minecraft.world.item.Item.Properties properties){
-        super(block,properties);
-        this.is_block=true;
-    }
-    @Override
-    public InteractionResult useOn(UseOnContext context){
-        if(!this.is_block){return InteractionResult.PASS;}
-        return super.useOn(context);
+        super(properties);
     }
     private static<T extends net.minecraft.world.item.Item>T register(String mod_id,String name,T item){return Registry.register(BuiltInRegistries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name),item);}
-    public boolean isBlock(){
-        return this.is_block;
-    }
     // Creation methods
     public static Item create(String mod_id,String name){
         return create(mod_id,name,new net.minecraft.world.item.Item.Properties());
@@ -51,19 +33,6 @@ public class Item extends net.minecraft.world.item.BlockItem{
     public static Item create(String mod_id,String name,net.minecraft.world.item.Item.Properties properties){
         properties.setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));
         Item item=new Item(properties);
-        return register(mod_id,name,item);
-    }
-    public static Item createBlockItem(String mod_id,String name,Block block){
-        return createBlockItem(mod_id,name,block,new net.minecraft.world.item.Item.Properties());
-    }
-    public static Item createBlockItem(String mod_id,String name,Block block,GenProvider gen){
-        Item item=createBlockItem(mod_id,name,block,new net.minecraft.world.item.Item.Properties());
-        ItemModelGen.blockItem(gen,mod_id,name);
-        return item;
-    }
-    public static Item createBlockItem(String mod_id,String name,Block block,net.minecraft.world.item.Item.Properties properties){
-        properties.setId(net.minecraft.resources.ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(mod_id,name)));
-        Item item=new Item(block,properties);
         return register(mod_id,name,item);
     }
     public static Item createMusicDisc(String mod_id,String name){

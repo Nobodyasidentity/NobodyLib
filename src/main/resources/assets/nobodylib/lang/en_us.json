@@ -1,6 +1,8 @@
 {
     "info.nobodylib.no_config": "Please install %s to see config.",
-    
+    "info.nobodylib.no_config.url": "https://modrinth.com/project/9s6osm5g",
+    "info.nobodylib.no_config.name": "Cloth Config API",
+
     "key.category.nobodylib.client": "NobodyLib",
     "config.nobodylib.client": "Client",
     "config.nobodylib.client.overlay": "Overlay",

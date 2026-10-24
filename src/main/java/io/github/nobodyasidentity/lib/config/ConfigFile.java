@@ -3,7 +3,7 @@ package io.github.nobodyasidentity.lib.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import io.github.nobodyasidentity.lib.NobodyLib;
+import io.github.nobodyasidentity.nobodylib.NobodyLib;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public final class ConfigFile<T>{
     private final Path path;
     private T value;
 
-    ConfigFile(String id,Class<T> type){
+    ConfigFile(String id,Class<T>type){
         this.id=id;
         this.type=type;
         this.path=FabricLoader.getInstance().getConfigDir().resolve(NobodyLib.MOD_ID).resolve(id+".json");

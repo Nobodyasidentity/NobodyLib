@@ -14,20 +14,20 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"io.github.nobodyasidentity.lib.NobodyLib"
+			"io.github.nobodyasidentity.nobodylib.NobodyLib"
 		],
 		"fabric-datagen": [
-			"io.github.nobodyasidentity.lib.NobodyLibDataGenerator"
+			"io.github.nobodyasidentity.nobodylib.NobodyLibDataGenerator"
 		],
 		"client": [
-			"io.github.nobodyasidentity.lib.NobodyLibClient"
+			"io.github.nobodyasidentity.nobodylib.NobodyLibClient"
 		],
 		"modmenu": [
-			"io.github.nobodyasidentity.lib.client.config.ModMenuIntegration"
+			"io.github.nobodyasidentity.nobodylib.client.config.ModMenuIntegration"
 		]
 	},
 	"depends": {
-		"minecraft": "~26.2",
+		"minecraft": "~26.3",
 		"fabric-api": "*"
 	},
 	"suggests": {
